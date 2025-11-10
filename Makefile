@@ -19,4 +19,3 @@ test: fork_vs_vfork.out
 clean:
 	@rm -f $(OBJS)
 	@rm -f fork_vs_vfork.out
-

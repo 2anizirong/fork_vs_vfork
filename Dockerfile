@@ -10,4 +10,3 @@ COPY . .
 RUN make
 
 CMD ["./fork_vs_vfork.out"]
-

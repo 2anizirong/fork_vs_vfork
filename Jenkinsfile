@@ -1,16 +1,20 @@
-pipeline {
-    agent any
-    stages {
-        stage('Build') {
-            steps {
-                sh 'make clean'
-                sh 'make'
-            }
+node {
+    def app
+    stage('Clone repository') {
+        git 'https://github.com/2anizirong/fork_vs_vfork.git'
+    }
+    stage('Build image') {
+        app = docker.build("kimian/test")
+    }
+    stage('Test image') {
+        app.inside {
+            sh 'make test'
         }
-        stage('Test') {
-            steps {
-                sh 'make test'
-            }
+    }
+    stage('Push image') {
+        docker.withRegistry('https://registry.hub.docker.com', 'ian') {
+           app.push("${env.BUILD_NUMBER}")
+           app.push("latest")
         }
     }
 }
